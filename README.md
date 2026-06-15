@@ -25,7 +25,17 @@ npm run preview  # 预览生产构建
 - **生产域名（RSS、Sitemap）：** `astro.config.mjs` → `site`
 - **全局样式与主题色：** `src/styles/global.css`
 
-## 技术栈
+## 自动部署
+
+代码已连接 GitHub 与 Vercel。每次 push 到 `master` 分支会自动触发部署。
+
+```bash
+git add .
+git commit -m "update content"
+git push
+```
+
+仓库地址：https://github.com/graimy/graimy-blog
 
 - Astro 6 + Content Collections
 - Tailwind CSS 4 + Typography
