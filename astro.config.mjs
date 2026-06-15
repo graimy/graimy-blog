@@ -10,7 +10,7 @@ import remarkMath from 'remark-math';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://example.com',
+	site: 'https://graimy-blog.vercel.app',
 	integrations: [mdx(), sitemap()],
 
 	markdown: {
