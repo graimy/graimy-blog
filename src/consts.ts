@@ -6,7 +6,7 @@ export const AUTHOR = {
 	name: 'Graimy',
 	title: 'PhD Student',
 	bio: '即将入学的博士生，研究方向偏量化、数据与实证。在这里沉淀学术思考，记录阅读与观影，也写下生活的零星片段。',
-	email: 'hello@example.com',
+	email: 'feimingchen@ust.hk',
 	github: 'https://github.com/graimy',
 };
 

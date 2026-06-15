@@ -1,0 +1,15 @@
+---
+interface Props {
+	rating: number;
+	size?: 'sm' | 'md';
+}
+
+const { rating, size = 'md' } = Astro.props;
+const starSize = size === 'sm' ? 'text-xs' : 'text-sm';
+---
+
+<span class:list={['flex tracking-[0.15em] text-accent', starSize]} aria-label={`评分 ${rating} / 5`}>
+	{Array.from({ length: 5 }, (_, i) => (
+		<span class={i < rating ? 'opacity-100' : 'opacity-25'}>★</span>
+	))}
+</span>

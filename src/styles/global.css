@@ -6,14 +6,14 @@
 	--font-sans: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif;
 	--font-serif: 'Source Serif 4', Georgia, 'Noto Serif SC', serif;
 
-	--color-accent: #7c5c47;
-	--color-accent-hover: #5e4536;
-	--color-ink: #1c1916;
-	--color-muted: #6b635a;
-	--color-paper: #f8f5f0;
-	--color-paper-edge: #ebe5da;
-	--color-surface: #ffffff;
-	--color-border: #e2dbd0;
+	--color-accent: #2f9e85;
+	--color-accent-hover: #247a67;
+	--color-ink: #142420;
+	--color-muted: #5f7d75;
+	--color-paper: #f3fbf8;
+	--color-paper-edge: #dff5ee;
+	--color-surface: #fcfffe;
+	--color-border: #c8e8de;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -24,14 +24,14 @@
 
 .dark {
 	color-scheme: dark;
-	--color-accent: #c4a882;
-	--color-accent-hover: #d8c4a4;
-	--color-ink: #ede8e1;
-	--color-muted: #a69d92;
-	--color-paper: #12100e;
-	--color-paper-edge: #1e1b17;
-	--color-surface: #1a1714;
-	--color-border: #2e2a24;
+	--color-accent: #6ecfb8;
+	--color-accent-hover: #8ee4d4;
+	--color-ink: #e6f5f0;
+	--color-muted: #8fb3a8;
+	--color-paper: #0f1a17;
+	--color-paper-edge: #1a2b26;
+	--color-surface: #152220;
+	--color-border: #243b35;
 }
 
 @layer base {
@@ -69,7 +69,7 @@
 
 @layer components {
 	.prose-blog {
-		@apply prose prose-stone max-w-none dark:prose-invert;
+		@apply prose prose-emerald max-w-none dark:prose-invert;
 		@apply prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight;
 		@apply prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover hover:prose-a:underline;
 		@apply prose-code:rounded prose-code:bg-paper-edge prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[0.9em] prose-code:before:content-none prose-code:after:content-none;
@@ -100,6 +100,38 @@
 
 	.card {
 		@apply rounded-2xl border border-border bg-surface p-5 transition-shadow duration-200 hover:shadow-lg;
+	}
+
+	.review-card {
+		@apply relative overflow-hidden rounded-2xl border border-border/70 bg-surface/60 p-6 transition-all duration-300;
+		@apply hover:-translate-y-0.5 hover:border-accent/30 hover:shadow-[0_12px_40px_-12px_rgba(0,0,0,0.15)];
+	}
+
+	.review-card::before {
+		content: '';
+		@apply pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent;
+	}
+
+	.review-reflection {
+		@apply relative mt-5 border-t border-border/60 pt-5;
+	}
+
+	.review-lead {
+		@apply font-serif leading-relaxed text-ink/90;
+	}
+
+	.review-card .review-lead {
+		@apply text-[0.95rem] text-muted;
+	}
+
+	.review-reflection .review-lead::before {
+		content: '“';
+		@apply mr-0.5 text-accent/60;
+	}
+
+	.review-reflection .review-lead::after {
+		content: '”';
+		@apply ml-0.5 text-accent/40;
 	}
 }
 

@@ -1,0 +1,54 @@
+---
+import ReviewRating from './ReviewRating.astro';
+
+interface Props {
+	title: string;
+	year?: number;
+	country?: string;
+	genres?: string[];
+	rating?: number;
+	variant?: 'card' | 'detail';
+}
+
+const { title, year, country, genres = [], rating, variant = 'detail' } = Astro.props;
+
+const metaLine = [
+	year && String(year),
+	country,
+	genres.length > 0 && genres.join(' / '),
+].filter(Boolean).join(' · ');
+
+const isCard = variant === 'card';
+---
+
+<header
+	class:list={[
+		isCard ? 'space-y-3' : 'mb-10 space-y-4 border-b border-border/80 pb-8',
+	]}
+>
+	<div class="flex items-start justify-between gap-4">
+		<div class="min-w-0 flex-1 space-y-2">
+			{
+				!isCard && (
+					<p class="text-[11px] font-medium uppercase tracking-[0.2em] text-accent/80">Film</p>
+				)
+			}
+			<h2
+				class:list={[
+					'font-serif font-semibold leading-tight text-ink',
+					isCard ? 'text-xl' : 'text-3xl md:text-4xl',
+				]}
+			>
+				{title}
+			</h2>
+			{metaLine && (
+				<p class:list={['text-muted', isCard ? 'text-xs' : 'text-sm']}>{metaLine}</p>
+			)}
+		</div>
+		{rating && (
+			<div class="shrink-0 rounded-full border border-border/80 bg-paper-edge/40 px-3 py-1.5">
+				<ReviewRating rating={rating} size={isCard ? 'sm' : 'md'} />
+			</div>
+		)}
+	</div>
+</header>

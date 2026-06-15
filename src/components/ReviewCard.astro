@@ -1,36 +1,30 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
+import MovieInfo from './MovieInfo.astro';
 
 interface Props {
 	review: CollectionEntry<'reviews'>;
 }
 
 const { review } = Astro.props;
-const { title, description, pubDate, director, year, rating } = review.data;
-
-function stars(count: number) {
-	return '★'.repeat(count) + '☆'.repeat(5 - count);
-}
+const { title, description, pubDate, year, country, genres, rating } = review.data;
 ---
 
-<article class="card group overflow-hidden p-0">
+<article class="review-card group">
 	<a href={`/reviews/${review.id}/`} class="block no-underline">
-		<div class="border-b border-border bg-paper-edge/50 px-5 py-4">
-			<div class="mb-2 flex items-center justify-between gap-2 text-xs text-muted">
-				<span>
-					{director && <span>{director}</span>}
-					{year && <span> · {year}</span>}
-				</span>
-				{rating && <span class="tracking-widest text-accent">{stars(rating)}</span>}
-			</div>
-			<h2 class="font-serif text-xl font-semibold text-ink transition-colors group-hover:text-accent">
-				{title}
-			</h2>
-		</div>
-		<div class="px-5 py-4">
-			<p class="mb-3 line-clamp-3 text-sm leading-relaxed text-muted">{description}</p>
-			<p class="text-xs text-muted">
+		<MovieInfo
+			title={title}
+			year={year}
+			country={country}
+			genres={genres}
+			rating={rating}
+			variant="card"
+		/>
+
+		<div class="review-reflection">
+			<p class="review-lead line-clamp-3">{description}</p>
+			<p class="mt-4 text-xs text-muted/80">
 				<FormattedDate date={pubDate} />
 			</p>
 		</div>
