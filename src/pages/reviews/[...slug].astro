@@ -1,0 +1,23 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import ReviewPost from '../../layouts/ReviewPost.astro';
+import { getTableOfContents } from '../../utils/toc';
+
+export async function getStaticPaths() {
+	const reviews = await getCollection('reviews', ({ data }) => !data.draft);
+	return reviews.map((review) => ({
+		params: { slug: review.id },
+		props: review,
+	}));
+}
+
+type Props = CollectionEntry<'reviews'>;
+
+const review = Astro.props;
+const { Content } = await render(review);
+const headings = getTableOfContents(review.body ?? '');
+---
+
+<ReviewPost {...review.data} headings={headings}>
+	<Content />
+</ReviewPost>

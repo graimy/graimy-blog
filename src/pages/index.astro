@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import PostCard from '../components/PostCard.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getReadingTime } from '../utils/reading-time';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const recentPosts = posts.slice(0, 5);
+---
+
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION} mainClass="max-w-4xl">
+	<section class="mb-14 border-b border-border pb-14">
+		<p class="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">PhD Student</p>
+		<h1 class="mb-5 font-serif text-4xl font-semibold leading-tight md:text-5xl">{AUTHOR.name}</h1>
+		<p class="mb-6 max-w-2xl text-lg leading-relaxed text-muted">{AUTHOR.bio}</p>
+		<div class="flex flex-wrap gap-3">
+			<a href="/blog/" class="btn-primary no-underline">阅读文章</a>
+			<a href={AUTHOR.github} class="btn-ghost no-underline" target="_blank" rel="noopener noreferrer">
+				GitHub
+			</a>
+			<a href={`mailto:${AUTHOR.email}`} class="btn-ghost no-underline">Email</a>
+		</div>
+	</section>
+
+	<section class="mb-14">
+		<h2 class="mb-6 font-serif text-2xl font-semibold">探索</h2>
+		<div class="grid gap-4 sm:grid-cols-3">
+			<a href="/blog/" class="card no-underline">
+				<h3 class="mb-2 font-serif text-lg font-semibold text-ink">写作</h3>
+				<p class="text-sm text-muted">科研笔记、深度文章与生活片段，支持标签筛选。</p>
+			</a>
+			<a href="/reviews/" class="card no-underline">
+				<h3 class="mb-2 font-serif text-lg font-semibold text-ink">影评</h3>
+				<p class="text-sm text-muted">电影随笔与人文感卡片，记录观影后的思考。</p>
+			</a>
+			<a href="/research/" class="card no-underline">
+				<h3 class="mb-2 font-serif text-lg font-semibold text-ink">科研</h3>
+				<p class="text-sm text-muted">进行中的项目、学术成果与常用工具栈。</p>
+			</a>
+		</div>
+	</section>
+
+	<section>
+		<div class="mb-6 flex items-end justify-between gap-4">
+			<h2 class="font-serif text-2xl font-semibold">最近更新</h2>
+			<a href="/blog/" class="text-sm font-medium text-muted no-underline hover:text-accent">查看全部 →</a>
+		</div>
+		<div class="grid gap-4">
+			{
+				recentPosts.map((post) => (
+					<PostCard post={post} readingTime={getReadingTime(post.body ?? '')} />
+				))
+			}
+		</div>
+	</section>
+</BaseLayout>

@@ -1,0 +1,41 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import type { TocHeading } from '../utils/toc';
+
+interface Props extends CollectionEntry<'reviews'>['data'] {
+	headings?: TocHeading[];
+}
+
+const { title, description, pubDate, director, year, rating, headings = [] } = Astro.props;
+
+function stars(count: number) {
+	return '★'.repeat(count) + '☆'.repeat(5 - count);
+}
+---
+
+<BaseLayout title={`${title} · 影评`} description={description} mainClass="max-w-5xl">
+	<div class="mx-auto grid max-w-3xl gap-10 xl:grid-cols-[minmax(0,1fr)_200px] xl:max-w-none">
+		<article>
+			<header class="mb-10 rounded-2xl border border-border bg-surface p-6 md:p-8">
+				<p class="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">电影随笔</p>
+				<h1 class="mb-4 font-serif text-3xl font-semibold leading-tight md:text-4xl">{title}</h1>
+				<div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
+					{director && <span>导演 · {director}</span>}
+					{year && <span>{year}</span>}
+					<span><FormattedDate date={pubDate} /></span>
+					{rating && <span class="tracking-widest text-accent">{stars(rating)}</span>}
+				</div>
+				<p class="mt-4 text-lg leading-relaxed text-muted">{description}</p>
+			</header>
+
+			<div class="prose-blog">
+				<slot />
+			</div>
+		</article>
+
+		<TableOfContents headings={headings} />
+	</div>
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import type { TocHeading } from '../utils/toc';
+
+interface Props {
+	headings: TocHeading[];
+}
+
+const { headings } = Astro.props;
+const toc = headings.filter((h) => h.depth <= 3);
+---
+
+{
+	toc.length > 2 && (
+		<aside class="hidden xl:block">
+			<nav aria-label="目录" class="sticky top-24">
+				<p class="mb-3 text-xs font-semibold uppercase tracking-widest text-muted">目录</p>
+				<ul class="space-y-2 border-l border-border pl-4 text-sm">
+					{toc.map((heading) => (
+						<li class:list={[heading.depth === 3 && 'pl-3']}>
+							<a
+								href={`#${heading.slug}`}
+								class="text-muted no-underline transition-colors hover:text-accent"
+							>
+								{heading.text}
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+		</aside>
+	)
+}

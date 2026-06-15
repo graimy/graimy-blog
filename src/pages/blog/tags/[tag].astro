@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import PostCard from '../../../components/PostCard.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { SITE_TITLE } from '../../../consts';
+import { getPostsByTag, tagFromSlug } from '../../../utils/tags';
+import { getReadingTime } from '../../../utils/reading-time';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog', ({ data }) => !data.draft);
+	const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+
+	return tags.map((tag) => ({
+		params: { tag: tag.toLowerCase() },
+		props: { tag },
+	}));
+}
+
+const { tag } = Astro.props;
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const canonicalTag = tagFromSlug(tag, allPosts) ?? tag;
+const posts = getPostsByTag(allPosts, canonicalTag);
+---
+
+<BaseLayout
+	title={`#${canonicalTag} · 写作 · ${SITE_TITLE}`}
+	description={`标签「${canonicalTag}」下的所有文章。`}
+	mainClass="max-w-4xl"
+>
+	<header class="mb-10">
+		<a href="/blog/" class="mb-4 inline-block text-sm text-muted no-underline hover:text-accent">
+			← 返回写作
+		</a>
+		<h1 class="font-serif text-3xl font-semibold">#{canonicalTag}</h1>
+	</header>
+
+	<div class="grid gap-4">
+		{
+			posts.map((post) => (
+				<PostCard post={post} readingTime={getReadingTime(post.body ?? '')} />
+			))
+		}
+	</div>
+</BaseLayout>

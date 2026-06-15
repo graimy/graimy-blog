@@ -1,0 +1,109 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+@import 'katex/dist/katex.min.css';
+
+@theme {
+	--font-sans: var(--font-atkinson), ui-sans-serif, system-ui, sans-serif;
+	--font-serif: 'Source Serif 4', Georgia, 'Noto Serif SC', serif;
+
+	--color-accent: #7c5c47;
+	--color-accent-hover: #5e4536;
+	--color-ink: #1c1916;
+	--color-muted: #6b635a;
+	--color-paper: #f8f5f0;
+	--color-paper-edge: #ebe5da;
+	--color-surface: #ffffff;
+	--color-border: #e2dbd0;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+	color-scheme: light;
+}
+
+.dark {
+	color-scheme: dark;
+	--color-accent: #c4a882;
+	--color-accent-hover: #d8c4a4;
+	--color-ink: #ede8e1;
+	--color-muted: #a69d92;
+	--color-paper: #12100e;
+	--color-paper-edge: #1e1b17;
+	--color-surface: #1a1714;
+	--color-border: #2e2a24;
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+	}
+
+	body {
+		@apply bg-paper font-sans text-ink antialiased;
+		background-image: radial-gradient(
+			ellipse 120% 80% at 50% -20%,
+			var(--color-paper-edge),
+			transparent
+		);
+		background-repeat: no-repeat;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@apply font-serif font-semibold tracking-tight text-ink;
+	}
+
+	a {
+		@apply text-accent underline-offset-[3px] transition-colors duration-150;
+	}
+
+	a:hover {
+		@apply text-accent-hover;
+	}
+}
+
+@layer components {
+	.prose-blog {
+		@apply prose prose-stone max-w-none dark:prose-invert;
+		@apply prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight;
+		@apply prose-a:text-accent prose-a:no-underline hover:prose-a:text-accent-hover hover:prose-a:underline;
+		@apply prose-code:rounded prose-code:bg-paper-edge prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[0.9em] prose-code:before:content-none prose-code:after:content-none;
+		@apply prose-pre:rounded-xl prose-pre:border prose-pre:border-border prose-pre:bg-surface;
+		@apply prose-blockquote:border-accent prose-blockquote:text-muted;
+	}
+
+	.btn {
+		@apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-150;
+	}
+
+	.btn-primary {
+		@apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-150 bg-accent text-white hover:bg-accent-hover;
+	}
+
+	.btn-ghost {
+		@apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-150 border border-border bg-transparent text-ink hover:border-accent hover:text-accent;
+	}
+
+	.tag {
+		@apply inline-flex items-center rounded-full border border-border bg-surface px-2.5 py-0.5 text-xs font-medium text-muted transition-colors;
+	}
+
+	.tag:hover,
+	.tag.active {
+		@apply border-accent text-accent;
+	}
+
+	.card {
+		@apply rounded-2xl border border-border bg-surface p-5 transition-shadow duration-200 hover:shadow-lg;
+	}
+}
+
+.sr-only {
+	@apply absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0;
+	clip: rect(0, 0, 0, 0);
+}

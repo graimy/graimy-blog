@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import ReviewCard from '../../components/ReviewCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE_TITLE } from '../../consts';
+
+const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<BaseLayout
+	title={`影评 · ${SITE_TITLE}`}
+	description="电影随笔与人文感观影记录。"
+	mainClass="max-w-4xl"
+>
+	<header class="mb-10">
+		<h1 class="mb-3 font-serif text-3xl font-semibold md:text-4xl">电影随笔</h1>
+		<p class="max-w-2xl text-muted">
+			银幕内外的光影与叙事。这里比科研笔记更松弛，更像深夜写下的一页观影日记。
+		</p>
+	</header>
+
+	<div class="grid gap-5 sm:grid-cols-2">
+		{reviews.map((review) => <ReviewCard review={review} />)}
+	</div>
+
+	{
+		reviews.length === 0 && (
+			<p class="text-muted">还没有影评，可以在 <code>src/content/reviews/</code> 添加 Markdown 文件。</p>
+		)
+	}
+</BaseLayout>

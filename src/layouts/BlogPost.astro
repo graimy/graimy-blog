@@ -1,0 +1,57 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import { CATEGORY_LABELS } from '../consts';
+import type { TocHeading } from '../utils/toc';
+import { formatReadingTime } from '../utils/reading-time';
+
+interface Props extends CollectionEntry<'blog'>['data'] {
+	headings?: TocHeading[];
+	readingTime?: number;
+}
+
+const { title, description, pubDate, updatedDate, category, tags, headings = [], readingTime } =
+	Astro.props;
+---
+
+<BaseLayout title={`${title} · Graimy`} description={description} mainClass="max-w-5xl">
+	<div class="mx-auto grid max-w-3xl gap-10 xl:grid-cols-[minmax(0,1fr)_200px] xl:max-w-none">
+		<article>
+			<header class="mb-10 border-b border-border pb-8">
+				<div class="mb-4 flex flex-wrap items-center gap-2 text-sm text-muted">
+					<span class="tag active pointer-events-none">{CATEGORY_LABELS[category]}</span>
+					<FormattedDate date={pubDate} />
+					{readingTime && <span>· {formatReadingTime(readingTime)}</span>}
+				</div>
+				<h1 class="mb-4 font-serif text-3xl font-semibold leading-tight md:text-4xl">{title}</h1>
+				<p class="text-lg leading-relaxed text-muted">{description}</p>
+				{
+					updatedDate && (
+						<p class="mt-4 text-sm italic text-muted">
+							更新于 <FormattedDate date={updatedDate} />
+						</p>
+					)
+				}
+				{
+					tags.length > 0 && (
+						<div class="mt-5 flex flex-wrap gap-2">
+							{tags.map((tag) => (
+								<a href={`/blog/tags/${encodeURIComponent(tag.toLowerCase())}/`} class="tag">
+									{tag}
+								</a>
+							))}
+						</div>
+					)
+				}
+			</header>
+
+			<div class="prose-blog">
+				<slot />
+			</div>
+		</article>
+
+		<TableOfContents headings={headings} />
+	</div>
+</BaseLayout>
