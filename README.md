@@ -1,7 +1,5 @@
 # Graimy — 个人博客
 
-博士生个人博客，基于 [Astro](https://astro.build/) 构建。支持 Markdown / MDX、LaTeX 数学公式、代码高亮与暗黑模式。
-
 ## 本地开发
 
 ```bash
