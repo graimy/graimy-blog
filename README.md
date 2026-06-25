@@ -9,14 +9,6 @@ npm run build    # 输出到 dist/
 npm run preview  # 预览生产构建
 ```
 
-## 内容目录
-
-| 路径 | 用途 |
-|------|------|
-| `src/content/blog/` | 科研 / 写作 / 生活文章 |
-| `src/content/reviews/` | 电影随笔 |
-| `src/content/projects/` | 科研项目 |
-
 ## 自定义
 
 - **站点信息、导航、社交链接：** `src/consts.ts`
